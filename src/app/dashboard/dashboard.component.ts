@@ -459,7 +459,6 @@ export class DashboardComponent implements OnInit {
   public sparklineChartLegend:boolean = false;
   public sparklineChartType:string = 'line';
 
-
   ngOnInit(): void {
     //generate random values for mainChart
     for (var i = 0; i <= this.mainChartElements; i++) {
