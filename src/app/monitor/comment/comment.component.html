@@ -1,0 +1,84 @@
+<div class="animated fadeIn comment-container">
+    <div class="screening-condition-container">
+        <h6>筛选条件</h6>
+        <div class="clearFloat">
+            <span class="float">目标种类：</span>
+            <div class="form-group float">
+                <select id="category">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div class="clearFloat">
+            <span class="float">可选品牌：</span>
+            <div class="float">
+                <input type="checkbox" value="option1"> 全选
+                <div>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> 飞利浦
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> oralB(欧乐B)
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> 高露洁
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> 狮王
+                    </label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="clearFloat">
+            <span class="float">电商平台：</span>
+            <div class="float">
+                <input type="checkbox" value="option1"> 全选
+                <div>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> 天猫
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> 京东
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> 一号店
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"> 贝贝网
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div>
+            <span>时间范围：</span>
+            <md-input-container id="datepicker1">
+                <input mdInput [mdDatepicker]="picker1" placeholder="Choose a date">
+                <button mdSuffix [mdDatepickerToggle]="picker1"></button>
+            </md-input-container>
+            <md-datepicker #picker1></md-datepicker>
+            <span>到</span>
+            <md-input-container id="datepicker2">
+                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date">
+                <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+            </md-input-container>
+            <md-datepicker #picker2></md-datepicker>
+        </div>
+        <div class="time-granularity">
+            <span>时间粒度：</span>
+            <label class="radio-inline" for="inline-radio1">
+                <input type="radio" id="inline-radio1" name="inline-radios" value="option1"> 周
+            </label>
+            <label class="radio-inline" for="inline-radio2">
+                <input type="radio" id="inline-radio2" name="inline-radios" value="option2"> 月
+            </label>
+        </div>
+        <hr>
+        <button class="btn btn-primary float-right">查询</button>
+    </div>
+</div>

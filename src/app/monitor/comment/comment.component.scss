@@ -1,0 +1,48 @@
+// div {
+//     border: 1px solid black;
+// }
+
+.float {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.comment-container {
+    .screening-condition-container {
+        overflow: auto;
+        padding: 15px;
+        border: 1px solid #E5E5E5;
+
+        .clearFloat {
+            overflow: auto;
+        }
+
+        #category {
+            width: 200px;
+        }
+
+        #datepicker1 {
+            margin-right: 10px;
+        }
+
+        #datepicker2 {
+            margin-left: 10px;
+        }
+
+        hr {
+            border-style: dashed;
+            margin-top: 7px;
+        }
+
+        .time-granularity label {
+            margin-right: 20px;
+        }
+    }
+}
+
+.btn:hover {
+    cursor: pointer;
+}
