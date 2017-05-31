@@ -11,14 +11,25 @@ declare var $: any;
 export class CommentComponent implements OnInit {
 
     public category;
-    public selected;
-    public bands;
     public comment_count;
     public sentiment;
     public count_dimension;
     public sentiment_dimension;
     public hotkey;
     public top10_topic;
+
+    public platforms = ["天猫", "京东", "一号店", "贝贝网"];
+    public bands;
+    public condition = {
+        selectedCategory: null,
+        selectedBand: {},
+        selectedPlatform: {},
+        timeRange: {
+            startDate: null,
+            endDate: null
+        },
+        timeGranularity: null
+    };
 
     constructor(public commentService: CommentService) {}
 
@@ -29,24 +40,39 @@ export class CommentComponent implements OnInit {
 
     public changeSelect() {
         for (var i = 0; i < this.category.length; ++i) {
-            if (this.category[i].name === this.selected) {
+            if (this.category[i].name === this.condition.selectedCategory) {
                 this.bands = this.category[i].band;
                 break;
             }
         }
     }
 
-    public selectBand(value) {
-        console.log("eee", value);
+    public toggleAllBand(checked) {
+        for (var i = 0; i < this.bands.length; ++i) {
+            this.condition.selectedBand[this.bands[i].name] = checked;
+        }
+
+    }
+
+    public toggleAllPlatform(checked) {
+        for (var i = 0; i < this.bands.length; ++i) {
+            this.condition.selectedPlatform[this.platforms[i]] = checked;
+        }
+    }
+
+    public search() {
+        console.log(this.condition.selectedBand);
+        console.log(this.condition.selectedPlatform);
+
     }
 
     public loadData() {
         //获取品类列表
         this.commentService.getCommentData("category").subscribe(category => {
             this.category = category;
-            this.selected = this.category[0].name;
+            this.condition.selectedCategory = this.category[0].name;
             this.bands = this.category[0].band;
-            console.log("sas", this.selected);
+            console.log("sas", this.condition.selectedCategory);
             console.log("category", this.category);
         },
         err => {

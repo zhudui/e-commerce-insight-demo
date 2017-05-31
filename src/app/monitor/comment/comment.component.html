@@ -4,7 +4,7 @@
         <div class="clearFloat">
             <span class="float">目标种类：</span>
             <div class="form-group float">
-                <select id="category" [(ngModel)]="selected" (change) = "changeSelect()">
+                <select id="category" [(ngModel)]="condition.selectedCategory" (change) = "changeSelect()">
                     <option *ngFor = "let cg of category">{{cg.name}}</option>
                 </select>
             </div>
@@ -13,10 +13,10 @@
         <div class="clearFloat">
             <span class="float">可选品牌：</span>
             <div class="float">
-                <input type="checkbox" value="option1"> 全选
+                <input type="checkbox" (click)="toggleAllBand($event.target.checked)"> 全选
                 <div>
                     <label class="checkbox-inline" *ngFor="let band of bands">
-                        <input type="checkbox" (click)="selectBand($event.target.checked)"> {{band.name}}
+                        <input type="checkbox" [(ngModel)]="condition.selectedBand[band.name]"> {{band.name}}
                     </label>
                 </div>
             </div>
@@ -25,19 +25,10 @@
         <div class="clearFloat">
             <span class="float">电商平台：</span>
             <div class="float">
-                <input type="checkbox" value="option1"> 全选
+                <input type="checkbox" (click)="toggleAllPlatform($event.target.checked)"> 全选
                 <div>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> 天猫
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> 京东
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> 一号店
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> 贝贝网
+                    <label class="checkbox-inline" *ngFor="let platform of platforms">
+                        <input type="checkbox" [(ngModel)]="condition.selectedPlatform[platform]"> {{platform}}
                     </label>
                 </div>
             </div>
@@ -66,7 +57,7 @@
             </label>
         </div>
         <hr>
-        <button class="btn btn-primary float-right">查询</button>
+        <button class="btn btn-primary float-right" (click)="search()">查询</button>
     </div>
     <div class="white-line-chart">
         <div echarts [options]="commentChartOption" class="line-chart"></div>
