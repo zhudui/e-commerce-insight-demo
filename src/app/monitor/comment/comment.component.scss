@@ -13,11 +13,15 @@
 .comment-container {
     .screening-condition-container {
         background-color: white;
-        width: 98%;
+        width: 1040px;
         overflow: auto;
         padding: 15px;
         margin-left: auto;
         margin-right: auto;
+
+        .checkbox-inline {
+            margin-right: 10px;
+        }
 
         .clearFloat {
             overflow: auto;
@@ -45,6 +49,13 @@
         }
     }
 
+    .white-line-chart {
+        margin-left: auto;
+        margin-right: auto;
+        width: 1040px;
+        background-color: white;
+    }
+
     .line-chart {
         width: 100%;
         height: 400px;
@@ -53,11 +64,21 @@
     }
 
     .radar-chart-container {
-        width: 98%;
+        width: 1040px;
         margin-left: auto;
         margin-right: auto;
         margin-top: 20px;
-        overflow: auto;
+        overflow: hidden;
+    }
+
+    .white-radar-chart:first-child {
+        margin-right: 40px;
+    }
+
+    .white-radar-chart {
+        width: 500px;
+        height: 450px;
+        background-color: white;
     }
 
     .radar-chart {
@@ -66,39 +87,40 @@
         padding: 15px;
     }
 
-    .white-radar-chart:first-child {
-        margin-right: 2%;
-    }
-
-    .white-line-chart {
-        margin-left: auto;
-        margin-right: auto;
-        width: 98%;
-        background-color: white;
-    }
-
-    .white-radar-chart {
-        width: 49%;
-        height: 450px;
-        background-color: white;
-    }
-
     .top-ten-table-container {
         overflow: auto;
         margin-top: 20px;
         margin-left: auto;
         margin-right: auto;
-        width: 98%;
+        width: 1040px;
+
+        .top-ten-table {
+            width: 500px;
+            height: 350px;
+            background-color: white;
+        }
+
+        .top-ten-table:first-child {
+            margin-right: 40px;
+        }
     }
 
-    .top-ten-table {
-        width: 49%;
-        height: 350px;
-        background-color: white;
-    }
+    .tag-cloud-container {
+        overflow: auto;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 1040px;
 
-    .top-ten-table:first-child {
-        margin-right: 2%;
+        .tag-cloud {
+            width: 500px;
+            height: 350px;
+            background-color: white;
+        }
+
+        #tag_cloud_1 {
+            margin-right: 40px;
+        }
     }
 }
 

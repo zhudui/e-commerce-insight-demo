@@ -1,0 +1,34 @@
+{
+    "code": 200,
+    "msg": "ok",
+    "result": [
+        {
+            "id": 1,
+            "name": "儿童电动牙刷",
+            "band": [
+                {
+                    "id": 1,
+                    "name": "飞利浦"
+                },
+                {
+                    "id": 2,
+                    "name": "欧乐B"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "维C软糖",
+            "band": [
+                {
+                    "id": 3,
+                    "name": "维乐维"
+                },
+                {
+                    "id": 4,
+                    "name": "德国Das gesunde plus"
+                }
+            ]
+        }
+    ]
+}

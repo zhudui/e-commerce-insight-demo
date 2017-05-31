@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommentComponent } from './comment/comment.component';
+import { TagCloudComponent } from '../common/tag-cloud/tag-cloud.component';
+
 import {MaterialModule, MdNativeDateModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AngularEchartsModule } from 'ngx-echarts';
@@ -17,6 +19,6 @@ import { MonitorRoutingModule } from './monitor-routing.module';
     ReactiveFormsModule,
     AngularEchartsModule
   ],
-  declarations: [CommentComponent]
+  declarations: [CommentComponent, TagCloudComponent]
 })
 export class MonitorModule { }

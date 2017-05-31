@@ -1,0 +1,23 @@
+{
+    "code": 200,
+    "msg": "ok",
+    "result": [
+        {
+            "band": "飞利浦",
+            "dimension_list": [
+                {
+                    "dimension": "产品口碑",
+                    "count": 90
+                },
+                {
+                    "dimension": "品牌",
+                    "count": 80
+                },
+                {
+                    "dimension": "购买结果",
+                    "rate": 75
+                }
+            ]
+        }
+    ]
+}

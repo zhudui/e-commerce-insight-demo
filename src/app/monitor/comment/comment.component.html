@@ -4,12 +4,8 @@
         <div class="clearFloat">
             <span class="float">目标种类：</span>
             <div class="form-group float">
-                <select id="category">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select id="category" [(ngModel)]="selected" (change) = "changeSelect()">
+                    <option *ngFor = "let cg of category">{{cg.name}}</option>
                 </select>
             </div>
         </div>
@@ -19,17 +15,8 @@
             <div class="float">
                 <input type="checkbox" value="option1"> 全选
                 <div>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> 飞利浦
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> oralB(欧乐B)
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> 高露洁
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox"> 狮王
+                    <label class="checkbox-inline" *ngFor="let band of bands">
+                        <input type="checkbox" (click)="selectBand($event.target.checked)"> {{band.name}}
                     </label>
                 </div>
             </div>
@@ -94,6 +81,11 @@
         <div class="white-radar-chart float">
             <div echarts [options]="emotionRadarChartOption" class="radar-chart"></div>
         </div>
+    </div>
+
+    <div class="tag-cloud-container">
+            <div id="tag_cloud_1" class="float tag-cloud"></div>
+            <div id="tag_cloud_2" class="float tag-cloud"></div>
     </div>
     <div class="top-ten-table-container">
         <div class="card-block top-ten-table float">
@@ -204,6 +196,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div>   
     </div>
 </div>
