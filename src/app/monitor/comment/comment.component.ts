@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommentService } from '../../services/comment.service';
+import * as _ from "lodash";
 
 declare var $: any;
 
@@ -18,6 +19,12 @@ export class CommentComponent implements OnInit {
     public hotkey;
     public top10_topic;
 
+    public commentChartOption;
+    public emotionChartOption;
+    public commentRadarChartOption;
+    public emotionRadarChartOption;
+    public selectedBandArray;
+
     public platforms = ["天猫", "京东", "一号店", "贝贝网"];
     public bands;
     public condition = {
@@ -35,7 +42,6 @@ export class CommentComponent implements OnInit {
 
     ngOnInit() {
         this.loadData();
-        this.initTagCloud();
     }
 
     public changeSelect() {
@@ -55,16 +61,12 @@ export class CommentComponent implements OnInit {
     }
 
     public toggleAllPlatform(checked) {
-        for (var i = 0; i < this.bands.length; ++i) {
+        for (var i = 0; i < this.platforms.length; ++i) {
             this.condition.selectedPlatform[this.platforms[i]] = checked;
         }
     }
 
-    public search() {
-        console.log(this.condition.selectedBand);
-        console.log(this.condition.selectedPlatform);
-
-    }
+    
 
     public loadData() {
         //获取品类列表
@@ -72,17 +74,19 @@ export class CommentComponent implements OnInit {
             this.category = category;
             this.condition.selectedCategory = this.category[0].name;
             this.bands = this.category[0].band;
-            console.log("sas", this.condition.selectedCategory);
             console.log("category", this.category);
         },
         err => {
             console.log(err);
         });
+    }
 
+    public search() {
+        this.selectedBandArray = this.getSelectedBand();
         //获取评论量趋势
         this.commentService.getCommentData("comment_count").subscribe(comment_count => {
             this.comment_count = comment_count;
-            console.log("comment_count",this.comment_count);
+            console.log("comment_count",this.comment_count);            
         },
         err => {
             console.log(err);
@@ -119,6 +123,7 @@ export class CommentComponent implements OnInit {
         this.commentService.getCommentData("hotkey").subscribe(hotkey => {
             this.hotkey = hotkey;
             console.log("hotkey", this.hotkey);
+            this.initTagCloud();
         },
         err => {
             console.log(err);
@@ -134,225 +139,42 @@ export class CommentComponent implements OnInit {
         });
     }
 
-    public commentChartOption = {
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            name: '邮件营销',
-            type: 'line',
-            stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
-        }, {
-            name: '联盟广告',
-            type: 'line',
-            stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
-        }, {
-            name: '视频广告',
-            type: 'line',
-            stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
-        }, {
-            name: '直接访问',
-            type: 'line',
-            stack: '总量',
-            data: [320, 332, 301, 334, 390, 330, 320]
-        }, {
-            name: '搜索引擎',
-            type: 'line',
-            stack: '总量',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
-        }]
-    };
-
-    public emotionChartOption = {
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            name: '邮件营销',
-            type: 'line',
-            stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
-        }, {
-            name: '联盟广告',
-            type: 'line',
-            stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
-        }, {
-            name: '视频广告',
-            type: 'line',
-            stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
-        }, {
-            name: '直接访问',
-            type: 'line',
-            stack: '总量',
-            data: [320, 332, 301, 334, 390, 330, 320]
-        }, {
-            name: '搜索引擎',
-            type: 'line',
-            stack: '总量',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
-        }]
-    };
-
-    public commentRadarChartOption = {
-        tooltip: {},
-        legend: {
-            data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
-        },
-        radar: {
-            // shape: 'circle',
-            indicator: [
-                { name: '销售（sales）', max: 6500 },
-                { name: '管理（Administration）', max: 16000 },
-                { name: '信息技术（Information Techology）', max: 30000 },
-                { name: '客服（Customer Support）', max: 38000 },
-                { name: '研发（Development）', max: 52000 },
-                { name: '市场（Marketing）', max: 25000 }
-            ]
-        },
-        series: [{
-            name: '预算 vs 开销（Budget vs spending）',
-            type: 'radar',
-            // areaStyle: {normal: {}},
-            data: [{
-                value: [4300, 10000, 28000, 35000, 50000, 19000],
-                name: '预算分配（Allocated Budget）'
-            }, {
-                value: [5000, 14000, 28000, 31000, 42000, 21000],
-                name: '实际开销（Actual Spending）'
-            }]
-        }]
-    };
-
-    public emotionRadarChartOption = {
-        tooltip: {},
-        legend: {
-            data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
-        },
-        radar: {
-            // shape: 'circle',
-            indicator: [
-                { name: '销售（sales）', max: 6500 },
-                { name: '管理（Administration）', max: 16000 },
-                { name: '信息技术（Information Techology）', max: 30000 },
-                { name: '客服（Customer Support）', max: 38000 },
-                { name: '研发（Development）', max: 52000 },
-                { name: '市场（Marketing）', max: 25000 }
-            ]
-        },
-        series: [{
-            name: '预算 vs 开销（Budget vs spending）',
-            type: 'radar',
-            // areaStyle: {normal: {}},
-            data: [{
-                value: [4300, 10000, 28000, 35000, 50000, 19000],
-                name: '预算分配（Allocated Budget）'
-            }, {
-                value: [5000, 14000, 28000, 31000, 42000, 21000],
-                name: '实际开销（Actual Spending）'
-            }]
-        }]
-    };
-
-    public data = [
-            ['广州', 20, 100],
-            ['浙江', 20, 123],
-            ['江苏', 25, 222],
-            ['北京', 8, 111],
-            ['上海', 7, 111],
-            ['河南', 6, 111],
-            ['河北', 5, 111],
-            ['四川', 5, 111],
-            ['安徽', 5, 111],
-            ['湖北', 5, 111],
-            ['福建', 4, 111],
-            ['辽宁', 4, 111],
-            ['湖南', 3, 111],
-            ['陕西', 3, 111],
-            ['广西', 3, 111],
-            ['江西', 3, 111],
-            ['重庆', 3, 111],
-            ['天津', 3, 111],
-            ['云南', 2, 111],
-            ['山西', 2, 111],
-            ['黑龙江', 2, 111],
-            ['吉林', 2, 111],
-            ['内蒙古', 2, 111],
-            ['贵州', 2, 111],
-            ['甘肃', 2, 111],
-            ['海南', 2, 111],
-            ['宁夏', 2, 111],
-            ['青海', 1, 111],
-            ['西藏', 1, 111],
-            ['香港', 1, 111],
-            ['未知', 1, 111],
-            ['台湾', 1, 111]
-        ];
-
+    private getSelectedBand() {
+        var result = [];
+        for (var i = 0; i < this.bands.length; ++i) {
+            if (this.condition.selectedBand[this.bands[i].name]) result.push(this.bands[i].name);
+        }
+        return result;
+    }
     
 
     public initTagCloud() {
-        var string_ = "";
-        for (var i = 0; i < this.data.length; i++) {
-            var string_f = this.data[i][0];
-            var string_n = this.data[i][1];
-            string_ += "{text: '" + string_f + "', weight: '" + string_n + "',html: {'class': 'span_list'}},";
+        var string_1 = "";
+        var string_2 = "";
+        if (this.hotkey[0]) {
+            for (var i = 0; i < this.hotkey[0].hotkey.length; i++) {
+                var string_f = this.hotkey[0].hotkey[i].key;
+                var string_n = this.hotkey[0].hotkey[i].weight;
+                string_1 += "{text: '" + string_f + "', weight: '" + string_n + "',html: {'class': 'span_list'}},";
+            }
+        }
+
+        if (this.hotkey[1]) {
+            for (var i = 0; i < this.hotkey[1].hotkey.length; i++) {
+                var string_f = this.hotkey[1].hotkey[i].key;
+                var string_n = this.hotkey[1].hotkey[i].weight;
+                string_2 += "{text: '" + string_f + "', weight: '" + string_n + "',html: {'class': 'span_list'}},";
+            }
         }
 
         $(function() {
-            $("#tag_cloud_1").jQCloud(word_list);
-            $("#tag_cloud_2").jQCloud(word_list);
+            $("#tag_cloud_1").jQCloud(word_list1);
+            $("#tag_cloud_2").jQCloud(word_list2);
         });
-        var string_list = string_;
-        var word_list = eval("[" + string_list + "]");
+        var string_list1 = string_1;
+        var string_list2 = string_2;
+        var word_list1 = eval("[" + string_list1 + "]");
+        var word_list2 = eval("[" + string_list2 + "]");
     }
 
 }

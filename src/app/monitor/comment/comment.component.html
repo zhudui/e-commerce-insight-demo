@@ -36,13 +36,13 @@
         <div>
             <span>时间范围：</span>
             <md-input-container id="datepicker1">
-                <input mdInput [mdDatepicker]="picker1" placeholder="Choose a date">
+                <input mdInput [mdDatepicker]="picker1" placeholder="Choose a date" [(ngModel)]="condition.timeRange.startDate">
                 <button mdSuffix [mdDatepickerToggle]="picker1"></button>
             </md-input-container>
             <md-datepicker #picker1></md-datepicker>
             <span>到</span>
             <md-input-container id="datepicker2">
-                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date">
+                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="condition.timeRange.endDate">
                 <button mdSuffix [mdDatepickerToggle]="picker2"></button>
             </md-input-container>
             <md-datepicker #picker2></md-datepicker>
@@ -50,27 +50,27 @@
         <div class="time-granularity">
             <span>时间粒度：</span>
             <label class="radio-inline" for="inline-radio1">
-                <input type="radio" id="inline-radio1" name="inline-radios" value="option1"> 周
+                <input type="radio" id="inline-radio1" name="inline-radios" value="week" [(ngModel)]="condition.timeGranularity"> 周
             </label>
             <label class="radio-inline" for="inline-radio2">
-                <input type="radio" id="inline-radio2" name="inline-radios" value="option2"> 月
+                <input type="radio" id="inline-radio2" name="inline-radios" value="month" [(ngModel)]="condition.timeGranularity"> 月
             </label>
         </div>
         <hr>
         <button class="btn btn-primary float-right" (click)="search()">查询</button>
     </div>
     <div class="white-line-chart">
-        <div echarts [options]="commentChartOption" class="line-chart"></div>
+        <app-line-chart [data]="comment_count" [legend]="selectedBandArray"></app-line-chart>
     </div>
     <div class="white-line-chart">
-        <div echarts [options]="emotionChartOption" class="line-chart"></div>
+        <app-line-chart [data]="sentiment" [legend]="selectedBandArray"></app-line-chart>
     </div>
     <div class="radar-chart-container">
         <div class="white-radar-chart float">
-            <div echarts [options]="commentRadarChartOption" class="radar-chart"></div>
+            <app-radar-chart [data]="count_dimension" [legend]="selectedBandArray"></app-radar-chart>
         </div>
         <div class="white-radar-chart float">
-            <div echarts [options]="emotionRadarChartOption" class="radar-chart"></div>
+            <app-radar-chart [data]="sentiment_dimension" [legend]="selectedBandArray"></app-radar-chart>
         </div>
     </div>
 
@@ -80,52 +80,52 @@
     </div>
     <div class="top-ten-table-container">
         <div class="card-block top-ten-table float">
-            <table class="table table-striped">
+            <table class="table table-striped" *ngIf="top10_topic && top10_topic[0] && top10_topic[0].topic_list.length === 3">
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Date registered</th>
-                        <th>Role</th>
-                        <th>Status</th>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>序号</th>
+                        <th>姓名</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Yiorgos Avraamu</td>
-                        <td>2012/01/01</td>
-                        <td>Member</td>
+                        <td>1</td>
+                        <td>{{top10_topic[0].topic_list[0].topic}}</td>
+                        <td>6</td>
                         <td>
                             <span class="badge badge-success">Active</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Avram Tarasios</td>
-                        <td>2012/02/01</td>
-                        <td>Staff</td>
+                        <td>2</td>
+                        <td>{{top10_topic[0].topic_list[1].topic}}</td>
+                        <td>7</td>
                         <td>
                             <span class="badge badge-danger">Banned</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Quintin Ed</td>
-                        <td>2012/02/01</td>
-                        <td>Admin</td>
+                        <td>3</td>
+                        <td>{{top10_topic[0].topic_list[2].topic}}</td>
+                        <td>8</td>
                         <td>
                             <span class="badge badge-default">Inactive</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Enéas Kwadwo</td>
+                        <td>4</td>
                         <td>2012/03/01</td>
-                        <td>Member</td>
+                        <td>9</td>
                         <td>
                             <span class="badge badge-warning">Pending</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Agapetus Tadeáš</td>
+                        <td>5</td>
                         <td>2012/01/21</td>
-                        <td>Staff</td>
+                        <td>10</td>
                         <td>
                             <span class="badge badge-success">Active</span>
                         </td>
@@ -135,52 +135,52 @@
         </div>
 
         <div class="card-block top-ten-table float">
-            <table class="table table-striped">
+            <table class="table table-striped" *ngIf="top10_topic && top10_topic[1] && top10_topic[1].topic_list.length === 3">
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Date registered</th>
-                        <th>Role</th>
-                        <th>Status</th>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>序号</th>
+                        <th>姓名</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Yiorgos Avraamu</td>
-                        <td>2012/01/01</td>
-                        <td>Member</td>
+                        <td>1</td>
+                        <td>{{top10_topic[1].topic_list[0].topic}}</td>
+                        <td>6</td>
                         <td>
                             <span class="badge badge-success">Active</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Avram Tarasios</td>
-                        <td>2012/02/01</td>
-                        <td>Staff</td>
+                        <td>2</td>
+                        <td>{{top10_topic[1].topic_list[1].topic}}</td>
+                        <td>7</td>
                         <td>
                             <span class="badge badge-danger">Banned</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Quintin Ed</td>
-                        <td>2012/02/01</td>
-                        <td>Admin</td>
+                        <td>3</td>
+                        <td>{{top10_topic[1].topic_list[2].topic}}</td>
+                        <td>8</td>
                         <td>
                             <span class="badge badge-default">Inactive</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Enéas Kwadwo</td>
+                        <td>4</td>
                         <td>2012/03/01</td>
-                        <td>Member</td>
+                        <td>9</td>
                         <td>
                             <span class="badge badge-warning">Pending</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Agapetus Tadeáš</td>
+                        <td>5</td>
                         <td>2012/01/21</td>
-                        <td>Staff</td>
+                        <td>10</td>
                         <td>
                             <span class="badge badge-success">Active</span>
                         </td>

@@ -7,11 +7,28 @@
             "dimension_list": [
                 {
                     "dimension": "产品口碑",
-                    "count": 90
+                    "rate": 90
                 },
                 {
                     "dimension": "品牌",
-                    "count": 80
+                    "rate": 80
+                },
+                {
+                    "dimension": "购买结果",
+                    "rate": 75
+                }
+            ]
+        },
+        {
+            "band": "欧乐B",
+            "dimension_list": [
+                {
+                    "dimension": "产品口碑",
+                    "rate": 90
+                },
+                {
+                    "dimension": "品牌",
+                    "rate": 80
                 },
                 {
                     "dimension": "购买结果",
