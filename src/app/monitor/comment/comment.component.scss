@@ -54,6 +54,8 @@
         margin-right: auto;
         width: 1040px;
         background-color: white;
+        padding: 10px;
+        margin-top: 20px;
     }
 
     .radar-chart-container {
@@ -72,24 +74,7 @@
         width: 500px;
         height: 450px;
         background-color: white;
-    }
-
-    .top-ten-table-container {
-        overflow: auto;
-        margin-top: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 1040px;
-
-        .top-ten-table {
-            width: 500px;
-            height: 350px;
-            background-color: white;
-        }
-
-        .top-ten-table:first-child {
-            margin-right: 40px;
-        }
+        padding: 10px;
     }
 
     .tag-cloud-container {
@@ -103,9 +88,35 @@
             width: 500px;
             height: 350px;
             background-color: white;
+            padding: 10px;
         }
 
-        #tag_cloud_1 {
+        .tag-cloud:first-child {
+            margin-right: 40px;
+        }
+
+        #tag_cloud_1, #tag_cloud_2 {
+            overflow: auto;
+            width: 100%;
+            height: 80%;
+        }
+    }
+
+    .top-ten-table-container {
+        overflow: hidden;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 1040px;
+
+        .top-ten-table {
+            width: 500px;
+            height: 350px;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .top-ten-table:first-child {
             margin-right: 40px;
         }
     }

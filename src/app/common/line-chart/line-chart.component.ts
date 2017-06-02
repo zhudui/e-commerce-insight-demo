@@ -13,17 +13,17 @@ export class LineChartComponent implements OnChanges {
 
     public chartOption = {};
 
-    private parseLineChartXYAxisData(data, band, attr) {
-        var dc = [];
+    private parseLineChartXYAxisData(data, brand, attr) {
+        var list = [];
         for (var i = 0; i < data.length; ++i) {
-            if (data[i].band === band) {
-                dc = data[i].dc;
+            if (data[i].brand === brand) {
+                list = data[i].list;
                 break;
             }
         }
         var result = [];
-        for (var i = 0; i < dc.length; ++i) {
-            result[i] = dc[i][attr];
+        for (var i = 0; i < list.length; ++i) {
+            result[i] = list[i][attr];
         }
         return result;
     }
@@ -48,16 +48,13 @@ export class LineChartComponent implements OnChanges {
     
 
     public initialLineChart() {
-        let xAxisData = this.parseLineChartXYAxisData(this.data, this.data[0].band, "date");
+        let xAxisData = this.parseLineChartXYAxisData(this.data, this.data[0].brand, "key");
         console.log("xAxisData", xAxisData);
         let legendData = this.legend;
         console.log("legendData", legendData);
         var series = [];
-        if (this.data[0] && this.data[0].dc[0] && this.data[0].dc[0].hasOwnProperty("count")) {
-            series = this.getLineChartSeriesData(legendData, this.data, "count");
-        } else {
-            series = this.getLineChartSeriesData(legendData, this.data, "rate");
-        }
+        series = this.getLineChartSeriesData(legendData, this.data, "value");
+        
         console.log("series", series);
 
 

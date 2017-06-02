@@ -14,15 +14,14 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
 
-import { CommentService } from './services/comment.service';
 // Routing Module
 import { AppRoutingModule } from './app.routing';
 
 //Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
 
-
-
+import { CommentService } from './services/comment.service';
+import { ApiService } from './services/api.service';
 
 
 @NgModule({
@@ -49,7 +48,8 @@ import { FullLayoutComponent } from './layouts/full-layout.component';
       provide: LocationStrategy,
       useClass: HashLocationStrategy
     },
-    CommentService
+    CommentService,
+    ApiService
   ],
   bootstrap: [ AppComponent ]
 })

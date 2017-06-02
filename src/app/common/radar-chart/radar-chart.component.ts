@@ -13,17 +13,17 @@ export class RadarChartComponent implements OnChanges {
 
     public chartOption;
 
-    private parseRadarChartData(data, band, attr) {
-        var dimension_list = [];
+    private parseRadarChartData(data, brand, attr) {
+        var list = [];
         for (var i = 0; i < data.length; ++i) {
-            if (data[i].band === band) {
-                dimension_list = data[i].dimension_list;
+            if (data[i].brand === brand) {
+                list = data[i].list;
                 break;
             }
         }
         var result = [];
-        for (var i = 0; i < dimension_list.length; ++i) {
-            result[i] = dimension_list[i][attr];
+        for (var i = 0; i < list.length; ++i) {
+            result[i] = list[i][attr];
         }
         return result;
     }
@@ -55,17 +55,13 @@ export class RadarChartComponent implements OnChanges {
     }
 
     public initialRadarChart() {
-        let dimension = this.parseRadarChartData(this.data, this.data[0].band, "dimension");
+        let dimension = this.parseRadarChartData(this.data, this.data[0].brand, "key");
         let indicator = this.parseDimension(dimension);
         console.log("radar indicator", indicator);
         let legendData = this.legend;
         console.log("radar legendData", legendData);
         var series = [];
-        if (this.data[0] && this.data[0].dimension_list[0] && this.data[0].dimension_list[0].hasOwnProperty("count")) {
-            series = this.getRadarChartSeriesData(legendData, this.data, "count");
-        } else {
-            series = this.getRadarChartSeriesData(legendData, this.data, "rate");
-        }
+        series = this.getRadarChartSeriesData(legendData, this.data, "value");
 
         console.log("radar series", series);
 

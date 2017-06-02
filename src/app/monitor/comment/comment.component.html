@@ -5,7 +5,7 @@
             <span class="float">目标种类：</span>
             <div class="form-group float">
                 <select id="category" [(ngModel)]="condition.selectedCategory" (change) = "changeSelect()">
-                    <option *ngFor = "let cg of category">{{cg.name}}</option>
+                    <option *ngFor = "let cg of category">{{cg.category}}</option>
                 </select>
             </div>
         </div>
@@ -13,13 +13,16 @@
         <div class="clearFloat">
             <span class="float">可选品牌：</span>
             <div class="float">
-                <input type="checkbox" (click)="toggleAllBand($event.target.checked)"> 全选
+                <input type="checkbox" (click)="toggleAllBrand($event.target.checked)"> 全选
                 <div>
-                    <label class="checkbox-inline" *ngFor="let band of bands">
-                        <input type="checkbox" [(ngModel)]="condition.selectedBand[band.name]"> {{band.name}}
+                    <label class="checkbox-inline" *ngFor="let brand of brands">
+                        <input type="checkbox" [(ngModel)]="condition.selectedBrand[brand.brand]"> {{brand.brand}}
                     </label>
                 </div>
             </div>
+        </div>
+        <div *ngIf="formErrors.brands" class="text-danger"> 
+            *{{formErrors.brands}}
         </div>
         <hr>
         <div class="clearFloat">
@@ -36,51 +39,75 @@
         <div>
             <span>时间范围：</span>
             <md-input-container id="datepicker1">
-                <input mdInput [mdDatepicker]="picker1" placeholder="Choose a date" [(ngModel)]="condition.timeRange.startDate">
+                <input mdInput [mdDatepicker]="picker1" placeholder="Choose a date" [(ngModel)]="condition.timeRange.startDate" disabled>
                 <button mdSuffix [mdDatepickerToggle]="picker1"></button>
             </md-input-container>
             <md-datepicker #picker1></md-datepicker>
             <span>到</span>
             <md-input-container id="datepicker2">
-                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="condition.timeRange.endDate">
+                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="condition.timeRange.endDate" disabled>
                 <button mdSuffix [mdDatepickerToggle]="picker2"></button>
             </md-input-container>
             <md-datepicker #picker2></md-datepicker>
         </div>
+        <div *ngIf="formErrors.timeRanges" class="text-danger"> 
+            *{{formErrors.timeRanges}}
+        </div>
         <div class="time-granularity">
             <span>时间粒度：</span>
             <label class="radio-inline" for="inline-radio1">
-                <input type="radio" id="inline-radio1" name="inline-radios" value="week" [(ngModel)]="condition.timeGranularity"> 周
+                <input type="radio" id="inline-radio1" name="inline-radios" value="w" [(ngModel)]="condition.timeGranularity"> 周
             </label>
             <label class="radio-inline" for="inline-radio2">
-                <input type="radio" id="inline-radio2" name="inline-radios" value="month" [(ngModel)]="condition.timeGranularity"> 月
+                <input type="radio" id="inline-radio2" name="inline-radios" value="m" [(ngModel)]="condition.timeGranularity"> 月
             </label>
         </div>
+        <div *ngIf="formErrors.granularity" class="text-danger"> 
+            *{{formErrors.granularity}}
+        </div>
         <hr>
-        <button class="btn btn-primary float-right" (click)="search()">查询</button>
+        <button type="submit" class="btn btn-primary float-right" (click)="search()">查询</button>
     </div>
     <div class="white-line-chart">
-        <app-line-chart [data]="comment_count" [legend]="selectedBandArray"></app-line-chart>
+        <h5>评论量趋势</h5>
+        <hr>
+        <app-line-chart [data]="comment_count" [legend]="selectedBrandArray"></app-line-chart>
     </div>
     <div class="white-line-chart">
-        <app-line-chart [data]="sentiment" [legend]="selectedBandArray"></app-line-chart>
+        <h5>情感趋势</h5>
+        <hr>
+        <app-line-chart [data]="sentiment" [legend]="selectedBrandArray"></app-line-chart>
     </div>
     <div class="radar-chart-container">
         <div class="white-radar-chart float">
-            <app-radar-chart [data]="count_dimension" [legend]="selectedBandArray"></app-radar-chart>
+            <h5>各维度评论量对比</h5>
+            <hr>
+            <app-radar-chart [data]="count_dimension" [legend]="selectedBrandArray"></app-radar-chart>
         </div>
         <div class="white-radar-chart float">
-            <app-radar-chart [data]="sentiment_dimension" [legend]="selectedBandArray"></app-radar-chart>
+            <h5>各维度情感指数对比</h5>
+            <hr>
+            <app-radar-chart [data]="sentiment_dimension" [legend]="selectedBrandArray"></app-radar-chart>
         </div>
     </div>
 
-    <div class="tag-cloud-container">
-            <div id="tag_cloud_1" class="float tag-cloud"></div>
-            <div id="tag_cloud_2" class="float tag-cloud"></div>
+    <div class="tag-cloud-container"> 
+        <div class="float tag-cloud">
+            <h5>评论热词</h5>
+            <hr>
+            <div id="tag_cloud_1"></div>
+        </div>
+        <div class="float tag-cloud">
+            <h5>评论热词</h5>
+            <hr>
+            <div id="tag_cloud_2"></div>
+        </div>
     </div>
     <div class="top-ten-table-container">
-        <div class="card-block top-ten-table float">
-            <table class="table table-striped" *ngIf="top10_topic && top10_topic[0] && top10_topic[0].topic_list.length === 3">
+        <div class="top-ten-table float">
+            <h5>Top 10评论话题</h5>
+            <hr>
+            <table class="table table-striped" *ngIf="top10_topic && top10_topic[0] && top10_topic[0].list.length === 10">
                 <thead>
                     <tr>
                         <th>序号</th>
@@ -92,50 +119,42 @@
                 <tbody>
                     <tr>
                         <td>1</td>
-                        <td>{{top10_topic[0].topic_list[0].topic}}</td>
+                        <td>{{top10_topic[0].list[0].key}}</td>
                         <td>6</td>
-                        <td>
-                            <span class="badge badge-success">Active</span>
-                        </td>
+                        <td>{{top10_topic[0].list[5].key}}</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>{{top10_topic[0].topic_list[1].topic}}</td>
+                        <td>{{top10_topic[0].list[1].key}}</td>
                         <td>7</td>
-                        <td>
-                            <span class="badge badge-danger">Banned</span>
-                        </td>
+                        <td>{{top10_topic[0].list[6].key}}</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>{{top10_topic[0].topic_list[2].topic}}</td>
+                        <td>{{top10_topic[0].list[2].key}}</td>
                         <td>8</td>
-                        <td>
-                            <span class="badge badge-default">Inactive</span>
-                        </td>
+                        <td>{{top10_topic[0].list[7].key}}</td>
                     </tr>
                     <tr>
                         <td>4</td>
-                        <td>2012/03/01</td>
+                        <td>{{top10_topic[0].list[3].key}}</td>
                         <td>9</td>
-                        <td>
-                            <span class="badge badge-warning">Pending</span>
-                        </td>
+                        <td>{{top10_topic[0].list[8].key}}</td>
                     </tr>
                     <tr>
                         <td>5</td>
-                        <td>2012/01/21</td>
+                        <td>{{top10_topic[0].list[4].key}}</td>
                         <td>10</td>
-                        <td>
-                            <span class="badge badge-success">Active</span>
-                        </td>
+                        <td>{{top10_topic[0].list[9].key}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="card-block top-ten-table float">
-            <table class="table table-striped" *ngIf="top10_topic && top10_topic[1] && top10_topic[1].topic_list.length === 3">
+        <div class="top-ten-table float">
+            <h5>Top 10评论话题</h5>
+            <hr>
+            <table class="table table-striped" *ngIf="top10_topic && top10_topic[1] && top10_topic[1].list.length === 10">
                 <thead>
                     <tr>
                         <th>序号</th>
@@ -147,43 +166,33 @@
                 <tbody>
                     <tr>
                         <td>1</td>
-                        <td>{{top10_topic[1].topic_list[0].topic}}</td>
+                        <td>{{top10_topic[1].list[0].key}}</td>
                         <td>6</td>
-                        <td>
-                            <span class="badge badge-success">Active</span>
-                        </td>
+                        <td>{{top10_topic[1].list[5].key}}</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>{{top10_topic[1].topic_list[1].topic}}</td>
+                        <td>{{top10_topic[1].list[1].key}}</td>
                         <td>7</td>
-                        <td>
-                            <span class="badge badge-danger">Banned</span>
-                        </td>
+                        <td>{{top10_topic[1].list[6].key}}</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>{{top10_topic[1].topic_list[2].topic}}</td>
+                        <td>{{top10_topic[1].list[2].key}}</td>
                         <td>8</td>
-                        <td>
-                            <span class="badge badge-default">Inactive</span>
-                        </td>
+                        <td>{{top10_topic[1].list[7].key}}</td>
                     </tr>
                     <tr>
                         <td>4</td>
-                        <td>2012/03/01</td>
+                        <td>{{top10_topic[1].list[3].key}}</td>
                         <td>9</td>
-                        <td>
-                            <span class="badge badge-warning">Pending</span>
-                        </td>
+                        <td>{{top10_topic[1].list[8].key}}</td>
                     </tr>
                     <tr>
                         <td>5</td>
-                        <td>2012/01/21</td>
+                        <td>{{top10_topic[1].list[4].key}}</td>
                         <td>10</td>
-                        <td>
-                            <span class="badge badge-success">Active</span>
-                        </td>
+                        <td>{{top10_topic[1].list[9].key}}</td>
                     </tr>
                 </tbody>
             </table>

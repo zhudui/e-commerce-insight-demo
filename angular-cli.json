@@ -23,7 +23,8 @@
         "../node_modules/chart.js/dist/Chart.min.js",
         "../node_modules/echarts/dist/echarts.js",
         "../node_modules/jquery/dist/jquery.min.js",
-        "../src/assets/js/jqcloud-1.0.4.js"
+        "../src/assets/js/jqcloud-1.0.4.js",
+        "../node_modules/moment/moment.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
