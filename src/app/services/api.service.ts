@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class ApiService {
 
     public api;
-    private base = "http://192.168.0.2:8080/insight";
+    private base = "http://192.168.0.6:8080/insight";
 
     constructor() {
         this.api = {};
@@ -16,5 +16,4 @@ export class ApiService {
         this.api.hotkey = this.base + '/hotkey';
         this.api.top10_topic = this.base + '/top10_topic';
     }
-
 }

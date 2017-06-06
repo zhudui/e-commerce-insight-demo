@@ -39,13 +39,13 @@
         <div>
             <span>时间范围：</span>
             <md-input-container id="datepicker1">
-                <input mdInput [mdDatepicker]="picker1" placeholder="Choose a date" [(ngModel)]="condition.timeRange.startDate" disabled>
+                <input mdInput [mdDatepicker]="picker1" placeholder="选择一个日期" [(ngModel)]="condition.timeRange.startDate" disabled>
                 <button mdSuffix [mdDatepickerToggle]="picker1"></button>
             </md-input-container>
             <md-datepicker #picker1></md-datepicker>
             <span>到</span>
             <md-input-container id="datepicker2">
-                <input mdInput [mdDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="condition.timeRange.endDate" disabled>
+                <input mdInput [mdDatepicker]="picker2" placeholder="选择一个日期" [(ngModel)]="condition.timeRange.endDate" disabled>
                 <button mdSuffix [mdDatepickerToggle]="picker2"></button>
             </md-input-container>
             <md-datepicker #picker2></md-datepicker>
@@ -92,110 +92,40 @@
     </div>
 
     <div class="tag-cloud-container"> 
-        <div class="float tag-cloud">
-            <h5>评论热词</h5>
+        <div class="float tag-cloud" *ngFor="let brand of selectedBrandArray; index as i">
+            <h5>{{brand}} 评论热词</h5>
             <hr>
-            <div id="tag_cloud_1"></div>
-        </div>
-        <div class="float tag-cloud">
-            <h5>评论热词</h5>
-            <hr>
-            <div id="tag_cloud_2"></div>
+            <div class="tag-cloud-box" [id]="'tag_cloud_' + i"></div>
         </div>
     </div>
     <div class="top-ten-table-container">
-        <div class="top-ten-table float">
-            <h5>Top 10评论话题</h5>
+        <div class="top-ten-table float" *ngFor="let top10 of top10_topic">
+            <h5>{{top10.brand}} Top 10评论话题</h5>
             <hr>
-            <table class="table table-striped" *ngIf="top10_topic && top10_topic[0] && top10_topic[0].list.length === 10">
+            <table class="table table-striped" *ngIf="top10.list && top10.list.length >= 10">
                 <thead>
                     <tr>
                         <th>序号</th>
-                        <th>姓名</th>
+                        <th>话题分类</th>
                         <th>序号</th>
-                        <th>姓名</th>
+                        <th>话题分类</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>{{top10_topic[0].list[0].key}}</td>
-                        <td>6</td>
-                        <td>{{top10_topic[0].list[5].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>{{top10_topic[0].list[1].key}}</td>
-                        <td>7</td>
-                        <td>{{top10_topic[0].list[6].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>{{top10_topic[0].list[2].key}}</td>
-                        <td>8</td>
-                        <td>{{top10_topic[0].list[7].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>{{top10_topic[0].list[3].key}}</td>
-                        <td>9</td>
-                        <td>{{top10_topic[0].list[8].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>{{top10_topic[0].list[4].key}}</td>
-                        <td>10</td>
-                        <td>{{top10_topic[0].list[9].key}}</td>
+                    <tr *ngFor="let temp of tempArray; index as i">
+                        <td>{{i+1}}</td>
+                        <td>
+                        <span>{{top10.list[i].key}}</span>
+                        <span>(<a (click)="getCommentDetail(top10.brand, top10.list[i].key)">{{top10.list[i].value}}</a>)</span>
+                        </td>
+                        <td>{{i+6}}</td>
+                        <td>
+                        <span>{{top10.list[i+5].key}}</span>
+                        <span>(<a (click)="getCommentDetail(top10.brand, top10.list[i+5].key)">{{top10.list[i+5].value}}</a>)</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
-        <div class="top-ten-table float">
-            <h5>Top 10评论话题</h5>
-            <hr>
-            <table class="table table-striped" *ngIf="top10_topic && top10_topic[1] && top10_topic[1].list.length === 10">
-                <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>姓名</th>
-                        <th>序号</th>
-                        <th>姓名</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>{{top10_topic[1].list[0].key}}</td>
-                        <td>6</td>
-                        <td>{{top10_topic[1].list[5].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>{{top10_topic[1].list[1].key}}</td>
-                        <td>7</td>
-                        <td>{{top10_topic[1].list[6].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>{{top10_topic[1].list[2].key}}</td>
-                        <td>8</td>
-                        <td>{{top10_topic[1].list[7].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>{{top10_topic[1].list[3].key}}</td>
-                        <td>9</td>
-                        <td>{{top10_topic[1].list[8].key}}</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>{{top10_topic[1].list[4].key}}</td>
-                        <td>10</td>
-                        <td>{{top10_topic[1].list[9].key}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>   
     </div>
 </div>

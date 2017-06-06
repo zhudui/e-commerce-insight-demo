@@ -26,12 +26,15 @@ export class CommentComponent implements OnInit {
     public sentiment_dimension;
     public hotkey;
     public top10_topic;
+    public comment_detail;
 
     public commentChartOption;
     public emotionChartOption;
     public commentRadarChartOption;
     public emotionRadarChartOption;
-    public selectedBrandArray;
+    public selectedBrandArray = [];
+
+    public tempArray = new Array(5);
 
     public platforms = ["天猫", "京东", "一号店", "贝贝网"];
     public brands;
@@ -167,11 +170,26 @@ export class CommentComponent implements OnInit {
             //获取Top10评论话题
             this.commentService.getCommentData("top10_topic", requestCondition).subscribe(top10_topic => {
                 this.top10_topic = top10_topic;
+                this.parseTop10Topic()
                 console.log("top10_topic", this.top10_topic);
             },
             err => {
                 console.log(err);
             });
+        }
+    }
+
+    private parseTop10Topic() {
+        for (var i = 0; i < this.top10_topic.length; ++i) {
+            if (this.top10_topic[i].list) {
+                while (this.top10_topic[i].list.length < 10) {
+                    var fake = {
+                        key: "暂无",
+                        value: 0
+                    };
+                    this.top10_topic[i].list.push(fake);
+                }
+            }
         }
     }
 
@@ -185,34 +203,45 @@ export class CommentComponent implements OnInit {
     
 
     public initTagCloud() {
-        var string_1 = "";
-        var string_2 = "";
-        if (this.hotkey[0]) {
-            for (var i = 0; i < this.hotkey[0].list.length; i++) {
-                var string_f = this.hotkey[0].list[i].key;
-                var string_n = this.hotkey[0].list[i].value;
-                string_1 += "{text: '" + string_f + "', weight: '" + string_n + "',html: {'class': 'span_list'}},";
+        var string_ = [];
+        for (var i = 0; i < this.hotkey.length; ++i) {
+            var str = "";
+            for (var j = 0; j < this.hotkey[i].list.length; ++j) {
+                var string_f = this.hotkey[i].list[j].key;
+                var string_n = this.hotkey[i].list[j].value;
+                str += "{text: '" + string_f + "', weight: '" + string_n + "',html: {'class': 'span_list'}},";
             }
-        }
-
-        if (this.hotkey[1]) {
-            for (var i = 0; i < this.hotkey[1].list.length; i++) {
-                var string_f = this.hotkey[1].list[i].key;
-                var string_n = this.hotkey[1].list[i].value;
-                string_2 += "{text: '" + string_f + "', weight: '" + string_n + "',html: {'class': 'span_list'}},";
-            }
+            string_.push(str);
         }
 
         $(function() {
-            $("#tag_cloud_1").empty();
-            $("#tag_cloud_2").empty();
-            $("#tag_cloud_1").jQCloud(word_list1);
-            $("#tag_cloud_2").jQCloud(word_list2);
+            for (var i = 0; i < word_list.length; ++i) {
+                var id = "#tag_cloud_" + i;
+                $(id).empty();
+                $(id).jQCloud(word_list[i]);
+            }
         });
-        var string_list1 = string_1;
-        var string_list2 = string_2;
-        var word_list1 = eval("[" + string_list1 + "]");
-        var word_list2 = eval("[" + string_list2 + "]");
+        var word_list = [];
+        for (var i = 0; i < string_.length; ++i) {
+            word_list[i] = eval("[" + string_[i] + "]");
+        }
+    }
+
+    public getCommentDetail(brand, topic) {
+        let reqData = {
+            category: this.condition.selectedCategory,
+            brand: brand,
+            topic: topic,
+            bdate: moment(this.condition.timeRange.startDate).format("YYYY-MM-DD"),
+            edate: moment(this.condition.timeRange.endDate).format("YYYY-MM-DD") 
+        };
+        this.commentService.getCommentDetail(reqData).subscribe(comment_detail => {
+                this.comment_detail = comment_detail;
+                console.log("comment_detail", this.comment_detail);
+            },
+            err => {
+                console.log(err);
+            });
     }
 
 }
