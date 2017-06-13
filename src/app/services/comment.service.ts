@@ -42,9 +42,10 @@ export class CommentService {
     }
 
     public getCommentDetail(data) {
-        let url = "src/mock-data/comment_detail.json";
+        let url = this.apiService.api['comment_detail'];
+        // let url = "src/mock-data/comment_detail.json";
         
-        return this.http.get(url)
+        return this.http.post(url, data)
             .map((res: Response) => {
                 let data = res.json();
                 if (data.code != 200) {

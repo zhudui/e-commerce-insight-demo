@@ -97,7 +97,7 @@
         }
 
         .tag-cloud-box {
-            overflow: auto;
+            overflow: hidden;
             width: 100%;
             height: 80%;
         }
@@ -135,4 +135,34 @@
 
 .btn:hover {
     cursor: pointer;
+}
+
+.comments {
+    overflow: hidden;
+    border-bottom: 1px solid #E5E5E5;
+    padding: 10px;
+
+    .comment_username {
+        width: 20%;
+    }
+
+    .full_comment {
+        width: 80%;
+
+        .full_comment_date {
+            margin-top: 10px;
+            color: #999999;
+        }
+    }
+}
+
+.page {
+    width: 520px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.my-modal {
+    min-width: 550px;
 }

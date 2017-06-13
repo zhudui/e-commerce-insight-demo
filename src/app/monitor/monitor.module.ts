@@ -5,6 +5,8 @@ import { CommentComponent } from './comment/comment.component';
 import {MaterialModule, MdNativeDateModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AngularEchartsModule } from 'ngx-echarts';
+import { ModalModule } from 'ng2-bootstrap/modal';
+import { PaginationModule } from 'ng2-bootstrap/pagination';
 
 import { MonitorRoutingModule } from './monitor-routing.module';
 
@@ -21,7 +23,9 @@ import { RadarChartComponent } from '../common/radar-chart/radar-chart.component
     MdNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularEchartsModule
+    AngularEchartsModule,
+    ModalModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   declarations: [CommentComponent, LineChartComponent, RadarChartComponent]
 })

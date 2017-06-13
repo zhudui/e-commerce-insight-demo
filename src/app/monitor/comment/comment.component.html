@@ -4,8 +4,8 @@
         <div class="clearFloat">
             <span class="float">目标种类：</span>
             <div class="form-group float">
-                <select id="category" [(ngModel)]="condition.selectedCategory" (change) = "changeSelect()">
-                    <option *ngFor = "let cg of category">{{cg.category}}</option>
+                <select id="category" [(ngModel)]="condition.selectedCategory" (change)="changeSelect()">
+                    <option *ngFor="let cg of category">{{cg.category}}</option>
                 </select>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="formErrors.brands" class="text-danger"> 
+        <div *ngIf="formErrors.brands" class="text-danger">
             *{{formErrors.brands}}
         </div>
         <hr>
@@ -50,7 +50,7 @@
             </md-input-container>
             <md-datepicker #picker2></md-datepicker>
         </div>
-        <div *ngIf="formErrors.timeRanges" class="text-danger"> 
+        <div *ngIf="formErrors.timeRanges" class="text-danger">
             *{{formErrors.timeRanges}}
         </div>
         <div class="time-granularity">
@@ -62,7 +62,7 @@
                 <input type="radio" id="inline-radio2" name="inline-radios" value="m" [(ngModel)]="condition.timeGranularity"> 月
             </label>
         </div>
-        <div *ngIf="formErrors.granularity" class="text-danger"> 
+        <div *ngIf="formErrors.granularity" class="text-danger">
             *{{formErrors.granularity}}
         </div>
         <hr>
@@ -90,8 +90,7 @@
             <app-radar-chart [data]="sentiment_dimension" [legend]="selectedBrandArray"></app-radar-chart>
         </div>
     </div>
-
-    <div class="tag-cloud-container"> 
+    <div class="tag-cloud-container">
         <div class="float tag-cloud" *ngFor="let brand of selectedBrandArray; index as i">
             <h5>{{brand}} 评论热词</h5>
             <hr>
@@ -115,17 +114,49 @@
                     <tr *ngFor="let temp of tempArray; index as i">
                         <td>{{i+1}}</td>
                         <td>
-                        <span>{{top10.list[i].key}}</span>
-                        <span>(<a (click)="getCommentDetail(top10.brand, top10.list[i].key)">{{top10.list[i].value}}</a>)</span>
+                            <span>{{top10.list[i].key}}</span>
+                            <span>(<a (click)="getCommentDetail(top10.brand, top10.list[i].key)">{{top10.list[i].value}}</a>)</span>
                         </td>
                         <td>{{i+6}}</td>
                         <td>
-                        <span>{{top10.list[i+5].key}}</span>
-                        <span>(<a (click)="getCommentDetail(top10.brand, top10.list[i+5].key)">{{top10.list[i+5].value}}</a>)</span>
+                            <span>{{top10.list[i+5].key}}</span>
+                            <span>(<a (click)="getCommentDetail(top10.brand, top10.list[i+5].key)">{{top10.list[i+5].value}}</a>)</span>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+<div bsModal #lgModal="bs-modal" class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="comment_detail && comment_detail.currentPagelist && comment_detail.currentPagelist.length != 0">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{comment_detail.category}} {{comment_detail.brand}} {{comment_detail.topic}} 的相关评论</h4>
+                <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="comments" *ngFor="let comment of comment_detail.currentPagelist">
+                    <div class="comment_username float">{{comment.username}}</div>
+                    <div class="full_comment float">
+                        <div>{{comment.comment}}</div>
+                        <div class="full_comment_date">{{comment.date}}</div>
+                    </div>
+                </div>
+                <div class="page">
+                    <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [maxSize]="6" [rotate]="false" [boundaryLinks]="true" firstText="首页" lastText="尾页" previousText="上页" nextText="下页" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event, comment_detail.brand, comment_detail.topic)"></pagination>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content" *ngIf="comment_detail && comment_detail.currentPagelist && comment_detail.currentPagelist.length == 0">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">暂无相关评论</h4>
+                <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>

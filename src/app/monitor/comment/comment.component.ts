@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommentService } from '../../services/comment.service';
+import { ModalDirective } from 'ng2-bootstrap/modal';
 
 import * as _ from "lodash";
 import * as moment from 'moment';
@@ -12,6 +13,7 @@ declare var $: any;
     styleUrls: ['./comment.component.scss']
 })
 export class CommentComponent implements OnInit {
+    @ViewChild('lgModal') public lgModal:ModalDirective;
 
     public formErrors = {
         brands: null,
@@ -49,6 +51,10 @@ export class CommentComponent implements OnInit {
         timeGranularity: null
     };
 
+    public totalItems: number = 0;
+    public currentPage: number = 1;
+    public itemsPerPage: number = 8;
+    
     constructor(public commentService: CommentService) {}
 
     ngOnInit() {
@@ -228,13 +234,40 @@ export class CommentComponent implements OnInit {
     }
 
     public getCommentDetail(brand, topic) {
+        this.currentPage = 1;
         let reqData = {
             category: this.condition.selectedCategory,
             brand: brand,
             topic: topic,
             bdate: moment(this.condition.timeRange.startDate).format("YYYY-MM-DD"),
-            edate: moment(this.condition.timeRange.endDate).format("YYYY-MM-DD") 
+            edate: moment(this.condition.timeRange.endDate).format("YYYY-MM-DD"),
+            currentPage: this.currentPage,
+            pageCommentCount: this.itemsPerPage
         };
+        console.log('reqData', reqData);
+        this.commentService.getCommentDetail(reqData).subscribe(comment_detail => {
+                this.comment_detail = comment_detail;
+                this.totalItems = this.comment_detail.commentCount;
+                console.log("this.totalItems", this.totalItems);
+                console.log("comment_detail", this.comment_detail);
+                this.lgModal.show();
+            },
+            err => {
+                console.log(err);
+            });
+    }
+
+    public pageChanged(event, brand, topic) {
+        let reqData = {
+            category: this.condition.selectedCategory,
+            brand: brand,
+            topic: topic,
+            bdate: moment(this.condition.timeRange.startDate).format("YYYY-MM-DD"),
+            edate: moment(this.condition.timeRange.endDate).format("YYYY-MM-DD"),
+            currentPage: event.page,
+            pageCommentCount: this.itemsPerPage
+        };
+
         this.commentService.getCommentDetail(reqData).subscribe(comment_detail => {
                 this.comment_detail = comment_detail;
                 console.log("comment_detail", this.comment_detail);
